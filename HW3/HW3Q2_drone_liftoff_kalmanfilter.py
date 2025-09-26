@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
 Drone liftoff simulation + altitude estimation using a Kalman Filter (KF).
 Cases:
@@ -8,18 +6,18 @@ Cases:
 (c) KF with matched model (m_est = m_true)
 (d) KF with mismatched model (m_est = 1.10 * m_true)
 
-Assumptions (from prompt):
+Values given from question prompt:
 - mass (true) = 0.25 kg
 - sampling rate = 200 Hz
 - constant thrust mean = 2.7 N with thrust noise variance 0.25 N^2
 - measurement variance per-sample ~ Uniform[0.01, 0.5] m^2 (sensor reports it)
-- simulate 5 seconds
+- simulate 5 secondslik
 - Discrete-time model:
     x_k = A x_{k-1} + B u_k
     h_k = C x_k + v_k
-  where x = [z, v]^T, C=[1,0], A=[[1, dt],[0,1]], B=[[0.5 dt^2],[dt]],
+  where x = [z, v]^T, C=[1,0], A=[[1, dt],[0,1]], B=[[0.5 dt^2],[dt]], 
   and u_k = T_k/m_est - g for the estimator. 
-  The plant truth uses a_true = (T_k + tau_T)/m_true - g, where tau_T ~ N(0, 0.25).
+  The ground truth uses a_true = (T_k + tau_T)/m_true - g, where tau_T ~ N(0, 0.25).
 - KF process noise uses the input-noise view: Sigma_u = (sigma_T / m_est)^2, Q = B Sigma_u B^T.
 """
 
@@ -118,6 +116,7 @@ def main():
     plt.legend()
     plt.grid(True)
     plt.xlim(0,5)
+    plt.ylim(-0.5,res["z_truth"][-1]+1)
     plt.tight_layout()
 
     # Plot errors
